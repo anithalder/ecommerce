@@ -17,6 +17,7 @@ import MenuItem from "@mui/material/MenuItem";
 import { useDispatch } from "react-redux";
 import { register } from "../../state/Auth/Action";
 import { Password } from "@mui/icons-material";
+import AuthModal from "../Auth/AuthModal";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -24,7 +25,8 @@ function classNames(...classes) {
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
-  const { loginWithRedirect, logout, isAuthenticated, user } = useAuth0();
+  // const { loginWithRedirect, logout, isAuthenticated, user } = useAuth0();
+  const [openAuthModal, setOpenAuthModal] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const navigate = useNavigate();
   const opened = Boolean(anchorEl);
@@ -34,6 +36,11 @@ export default function Navbar() {
   };
   const handleClose = () => {
     setAnchorEl(null);
+    setOpenAuthModal(false);
+  };
+
+  const handleOpen = () => {
+    setOpenAuthModal(true);
   };
 
   return (
@@ -178,16 +185,10 @@ export default function Navbar() {
 
                 <div className="space-y-6 border-t border-gray-200 px-4 py-6">
                   <div className="flow-root">
-                    {isAuthenticated ? (
+                    {false ? (
                       <div>
                         <Button
-                          onClick={() =>
-                            logout({
-                              logoutParams: {
-                                returnTo: window.location.origin,
-                              },
-                            })
-                          }
+                          onClick={() => {}}
                           className="-m-2 block p-2 font-medium text-gray-900"
                           sx={{
                             fontStyle: "normal",
@@ -220,95 +221,14 @@ export default function Navbar() {
                       </div>
                     ) : (
                       <Button
-                        onClick={() => loginWithRedirect()}
+                        onClick={handleOpen}
                         className="-m-2 block p-2 font-medium text-gray-900"
                         sx={{ fontStyle: "normal" }}
                       >
-                        Sign in / Create account
+                        Login / Create account
                       </Button>
                     )}
                   </div>
-                  {/* {isAuthenticated ? (
-                    <div>
-                      <Button
-                        id="basic-button"
-                        aria-controls={opened ? "basic-menu" : undefined}
-                        aria-haspopup="true"
-                        aria-expanded={opened ? "true" : undefined}
-                        onClick={handleClick}
-                      >
-                        <Avatar
-                          className=" text-white"
-                          sx={{
-                            width: 45,
-                            height: 45,
-                            bgcolor: "#03424C",
-                            border: 1,
-                          }}
-                        >
-                          <img src={user.picture} alt={user.name.charAt(0)} />
-                        </Avatar>
-                      </Button>
-                      <Menu
-                        id="basic-menu"
-                        anchorEl={anchorEl}
-                        open={opened}
-                        onClose={handleClose}
-                        MenuListProps={{
-                          "aria-labelledby": "basic-button",
-                        }}
-                      >
-                        <MenuItem onClick={handleClose}>Profile</MenuItem>
-                        <MenuItem onClick={() => navigate("/account/order")}>
-                          My Orders
-                        </MenuItem>
-                        <MenuItem
-                          onClick={() =>
-                            logout({
-                              logoutParams: {
-                                returnTo: window.location.origin,
-                              },
-                            })
-                          }
-                        >
-                          Logout
-                        </MenuItem>
-                      </Menu>
-                    </div>
-                  ) : (
-                    <div>
-                      <Button
-                        id="basic-button"
-                        aria-controls={opened ? "basic-menu" : undefined}
-                        aria-haspopup="true"
-                        aria-expanded={opened ? "true" : undefined}
-                        onClick={handleClick}
-                      >
-                        <Avatar
-                          className=" text-white"
-                          sx={{
-                            width: 45,
-                            height: 45,
-                            bgcolor: "#03424C",
-                            border: 1,
-                          }}
-                        />
-                      </Button>
-                      <Menu
-                        id="basic-menu"
-                        anchorEl={anchorEl}
-                        open={opened}
-                        onClose={handleClose}
-                        MenuListProps={{
-                          "aria-labelledby": "basic-button",
-                        }}
-                      >
-                        <MenuItem onClick={() => loginWithRedirect()}>
-                          Log in / Sign up
-                        </MenuItem>
-                      </Menu>
-                    </div>
-                  )} */}
                 </div>
 
                 <div className="border-t border-gray-200 px-4 py-6">
@@ -480,7 +400,7 @@ export default function Navbar() {
 
               <div className="ml-auto flex items-center">
                 <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
-                  {isAuthenticated ? (
+                  {false ? (
                     <div>
                       <Button
                         id="basic-button"
@@ -498,7 +418,7 @@ export default function Navbar() {
                             border: 1,
                           }}
                         >
-                          <img src={user.picture} alt={user.name.charAt(0)} />
+                          A
                         </Avatar>
                       </Button>
                       <Menu
@@ -514,17 +434,7 @@ export default function Navbar() {
                         <MenuItem onClick={() => navigate("/account/order")}>
                           My Orders
                         </MenuItem>
-                        <MenuItem
-                          onClick={() =>
-                            logout({
-                              logoutParams: {
-                                returnTo: window.location.origin,
-                              },
-                            })
-                          }
-                        >
-                          Logout
-                        </MenuItem>
+                        <MenuItem onClick={() => {}}>Logout</MenuItem>
                       </Menu>
                     </div>
                   ) : (
@@ -555,8 +465,8 @@ export default function Navbar() {
                           "aria-labelledby": "basic-button",
                         }}
                       >
-                        <MenuItem onClick={() => loginWithRedirect()}>
-                          Log in / Sign up
+                        <MenuItem onClick={handleOpen}>
+                          Login / Create account
                         </MenuItem>
                       </Menu>
                     </div>
@@ -594,7 +504,7 @@ export default function Navbar() {
                       aria-hidden="true"
                     />
                     <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">
-                      0
+                      2
                     </span>
                     <span className="sr-only">items in cart, view bag</span>
                   </a>
@@ -604,6 +514,7 @@ export default function Navbar() {
           </div>
         </nav>
       </header>
+      <AuthModal handleClose={handleClose} open={openAuthModal} />
     </div>
   );
 }

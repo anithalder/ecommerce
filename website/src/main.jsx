@@ -25,6 +25,8 @@ const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
       <Route path="" element={<Home />} />
+      <Route path="/login" element={<Home />} />
+      <Route path="/register" element={<Home />} />
       <Route path="cart" element={<Cart />} />
       <Route path="product" element={<Product />} />
       <Route path="product/:productId" element={<ProductDetail />} />
@@ -37,17 +39,17 @@ const router = createBrowserRouter(
 );
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <Auth0Provider
-        domain="dev-sqs130jpqkzcr31a.us.auth0.com"
-        clientId="sbKJ6Jh2wAlMTfEcTU2iwpUo17Em8mLC"
-        authorizationParams={{
-          redirect_uri: window.location.origin,
-        }}
-      >
-        <RouterProvider router={router} />
-      </Auth0Provider>
-    </Provider>
-  </React.StrictMode>
+  // <React.StrictMode>
+  <Provider store={store}>
+    {/* <Auth0Provider
+      domain="dev-sqs130jpqkzcr31a.us.auth0.com"
+      clientId="sbKJ6Jh2wAlMTfEcTU2iwpUo17Em8mLC"
+      authorizationParams={{
+        redirect_uri: window.location.origin,
+      }}
+    > */}
+    <RouterProvider router={router} />
+    {/* </Auth0Provider> */}
+  </Provider>
+  // </React.StrictMode>
 );

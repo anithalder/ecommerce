@@ -12,7 +12,7 @@ const register = async (req, res) => {
         await cartService.createCart(user)
         return res.status(200).send({ jwt, message: "User created successfully" })
     } catch (error) {
-        return res.status(500).send({ error: error.message })
+        return res.status(500).send(error.message)
     }
 };
 

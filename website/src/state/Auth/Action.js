@@ -9,7 +9,8 @@ import {
     LOGIN_FAILURE,
     LOGOUT,
     GET_USER_REQUEST,
-    GET_USER_SUCCESS
+    GET_USER_SUCCESS,
+    GET_USER_FAILURE
 } from './AuthType'
 
 const registerRequest = () => ({ type: REGISTER_REQUEST })
@@ -25,6 +26,7 @@ export const register = (userData) => async (dispatch) => {
         if (user.jwt) {
             localStorage.setItem('jwt', user.jwt)
         }
+        console.log(user)
         dispatch(registerSuccess(user.jwt))
     } catch (error) {
         dispatch(registerFailure(error))
@@ -44,6 +46,7 @@ export const login = (userData) => async (dispatch) => {
         if (user.jwt) {
             localStorage.setItem('jwt', user.jwt)
         }
+        console.log(user)
         dispatch(loginSuccess(user.jwt))
     } catch (error) {
         dispatch(loginFailure(error))
@@ -56,14 +59,15 @@ const getUserFailure = (error) => ({ type: GET_USER_FAILURE, payload: error })
 
 export const getUser = () => async (dispatch) => {
     dispatch(getUserRequest())
-
+    const token = localStorage.getItem('jwt')
     try {
-        const response = await axios.get(`${API_BASE_URL}/users`, {
+        const response = await axios.get(`${API_BASE_URL}/users/profile`, {
             headers: {
-                "Authorization": `Bearer ${localStorage.getItem('jwt')}`
+                "Authorization": `Bearer ${token}`
             }
         })
         const user = response.data
+        console.log(user)
         dispatch(getUserSuccess(user))
     } catch (error) {
         dispatch(getUserFailure(error))

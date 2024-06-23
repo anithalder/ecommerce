@@ -6,6 +6,4 @@ const rootReducer = redux.combineReducers({
     auth: authReducer
 })
 
-const store = redux.legacy_createStore(rootReducer, redux.applyMiddleware(thunk))
-
-export default store
+export const store = redux.legacy_createStore(rootReducer, redux.applyMiddleware(thunk))
