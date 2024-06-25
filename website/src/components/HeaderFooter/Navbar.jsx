@@ -14,7 +14,7 @@ import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { useDispatch, useSelector } from "react-redux";
-import { getUser, logout } from "../../state/Auth/Action";
+import { getUser, logout } from "../../Redux/Auth/Action";
 import AuthModal from "../Auth/AuthModal";
 
 function classNames(...classes) {
@@ -38,9 +38,8 @@ export default function Navbar() {
     }
   }, [jwt, auth.jwt]);
 
-  console.log(auth);
-
   useEffect(() => {
+    console.log(auth);
     if (auth.user) {
       handleClose();
     }
