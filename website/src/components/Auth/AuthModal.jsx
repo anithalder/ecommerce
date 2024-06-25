@@ -4,11 +4,22 @@ import clsx from "clsx";
 import { styled, css } from "@mui/system";
 import { Modal as BaseModal } from "@mui/base/Modal";
 import RegisterForm from "./RegisterForm";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import LoginForm from "./LoginForm";
+import { useSelector } from "react-redux";
 
 const AuthModal = ({ handleClose, open }) => {
   const location = useLocation();
+  // const { auth } = useSelector((store) => store);
+  const navigate = useNavigate();
+  // React.useEffect(() => {
+  //   if (auth.user) {
+  //     handleClose();
+  //     if (auth.user?.role === "ADMIN") {
+  //       navigate("/admin");
+  //     }
+  //   }
+  // }, [auth.user]);
   return (
     <div>
       <Modal

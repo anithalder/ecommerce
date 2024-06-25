@@ -1,27 +1,30 @@
-import { Button, Grid, TextField } from "@mui/material";
-import React, { useEffect } from "react";
+import { Alert, Button, Grid, Snackbar, TextField } from "@mui/material";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { getUser, login } from "../../state/Auth/Action";
+import { getUser, login } from "../../Redux/Auth/Action";
 
 function LoginForm() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const jwt = localStorage.getItem("jwt");
+  const [openSnackBar, setOpenSnackBar] = useState(false);
   const { auth } = useSelector((store) => store);
-
+  const handleCloseSnakbar = () => setOpenSnackBar(false);
   useEffect(() => {
     if (jwt) {
       dispatch(getUser(jwt));
     }
-  }, [jwt, auth.jwt]);
+  }, [jwt]);
+
+  useEffect(() => {
+    if (auth.user || auth.error) setOpenSnackBar(true);
+  }, [auth.user]);
 
   const handelSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const userData = {
-      firstName: data.get("firstName"),
-      lastName: data.get("lastName"),
       email: data.get("email"),
       password: data.get("password"),
     };
@@ -31,7 +34,7 @@ function LoginForm() {
   };
 
   return (
-    <div>
+    <div className="m-3">
       <form onSubmit={handelSubmit}>
         <Grid container spacing={3}>
           <Grid item xs={12}>
@@ -101,6 +104,15 @@ function LoginForm() {
           </Button>
         </div>
       </div>
+      <Snackbar
+        open={openSnackBar}
+        autoHideDuration={6000}
+        onClose={handleCloseSnakbar}
+      >
+        <Alert severity="success" sx={{ width: "100%" }}>
+          {auth.error ? auth.error : auth.user ? "Register Success" : ""}
+        </Alert>
+      </Snackbar>
     </div>
   );
 }

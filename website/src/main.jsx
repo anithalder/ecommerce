@@ -19,7 +19,7 @@ import Orders from "./components/Orders/Orders.jsx";
 import OrderDetail from "./components/Orders/OrderDetail.jsx";
 import Error from "./Error.jsx";
 import { Provider } from "react-redux";
-import store from "./state/store.js";
+import store from "./Redux/store.js";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -51,5 +51,5 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     <RouterProvider router={router} />
     {/* </Auth0Provider> */}
   </Provider>
-  // </React.StrictMode>
+  //  </React.StrictMode>
 );

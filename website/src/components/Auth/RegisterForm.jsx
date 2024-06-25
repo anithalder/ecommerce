@@ -1,21 +1,27 @@
-import { Button, Grid, TextField } from "@mui/material";
-import React, { useEffect } from "react";
+import { Alert, Button, Grid, Snackbar, TextField } from "@mui/material";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { getUser, register } from "../../state/Auth/Action";
+import { getUser, register } from "../../Redux/Auth/Action";
 
 function RegisterForm() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const jwt = localStorage.getItem("jwt");
+  const [openSnackBar, setOpenSnackBar] = useState(false);
   const { auth } = useSelector((store) => store);
+  const handleClose = () => setOpenSnackBar(false);
+
+  const jwt = localStorage.getItem("jwt");
 
   useEffect(() => {
     if (jwt) {
       dispatch(getUser(jwt));
-      // console.log(auth.user);
     }
-  }, [jwt, auth.jwt]);
+  }, [jwt]);
+
+  useEffect(() => {
+    if (auth.user || auth.error) setOpenSnackBar(true);
+  }, [auth.user]);
 
   const handelSubmit = (event) => {
     event.preventDefault();
@@ -121,6 +127,15 @@ function RegisterForm() {
           </Button>
         </div>
       </div>
+      <Snackbar
+        open={openSnackBar}
+        autoHideDuration={6000}
+        onClose={handleClose}
+      >
+        <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
+          {auth.error ? auth.error : auth.user ? "Register Success" : ""}
+        </Alert>
+      </Snackbar>
     </div>
   );
 }

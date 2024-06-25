@@ -9,7 +9,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { navigation } from "./NavigationData";
 import { Avatar } from "@mui/material";
-import { useLocation, useNavigate, useNavigation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
@@ -36,17 +36,7 @@ export default function Navbar() {
     if (jwt) {
       dispatch(getUser(jwt));
     }
-  }, [jwt, auth.jwt]);
-
-  useEffect(() => {
-    console.log(auth);
-    if (auth.user) {
-      handleClose();
-    }
-    if (location.pathname === "/login" || location.pathname === "/register") {
-      navigate(-1);
-    }
-  }, [auth.user]);
+  }, [jwt]);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -64,6 +54,16 @@ export default function Navbar() {
     dispatch(logout());
     handleClose();
   };
+
+  useEffect(() => {
+    console.log(auth.user);
+    if (auth.user) {
+      handleClose();
+    }
+    if (location.pathname === "/login" || location.pathname === "/register") {
+      navigate(-1);
+    }
+  }, [auth.user]);
 
   return (
     <div className=" bg-green-400  mb-0 border border-b">
@@ -440,7 +440,7 @@ export default function Navbar() {
                             border: 1,
                           }}
                         >
-                          {auth.user?.firstName[0].toUpperCase()}
+                          {auth.user.firstName[0].toUpperCase()}
                         </Avatar>
                       </Button>
                       <Menu
