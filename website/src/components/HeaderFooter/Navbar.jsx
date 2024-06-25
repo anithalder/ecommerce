@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Fragment, useState } from "react";
+import { Fragment, useState, useEffect } from "react";
 import { Dialog, Popover, Tab, Transition } from "@headlessui/react";
 import {
   Bars3Icon,
@@ -7,16 +7,14 @@ import {
   ShoppingBagIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
-import { useAuth0 } from "@auth0/auth0-react";
 import { navigation } from "./NavigationData";
 import { Avatar } from "@mui/material";
-import { useNavigate, useNavigation } from "react-router-dom";
+import { useLocation, useNavigate, useNavigation } from "react-router-dom";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import { useDispatch } from "react-redux";
-import { register } from "../../state/Auth/Action";
-import { Password } from "@mui/icons-material";
+import { useDispatch, useSelector } from "react-redux";
+import { getUser, logout } from "../../state/Auth/Action";
 import AuthModal from "../Auth/AuthModal";
 
 function classNames(...classes) {
@@ -25,11 +23,31 @@ function classNames(...classes) {
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
-  // const { loginWithRedirect, logout, isAuthenticated, user } = useAuth0();
   const [openAuthModal, setOpenAuthModal] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const navigate = useNavigate();
   const opened = Boolean(anchorEl);
+  const jwt = localStorage.getItem("jwt");
+  const { auth } = useSelector((store) => store);
+  const dispatch = useDispatch();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (jwt) {
+      dispatch(getUser(jwt));
+    }
+  }, [jwt, auth.jwt]);
+
+  console.log(auth);
+
+  useEffect(() => {
+    if (auth.user) {
+      handleClose();
+    }
+    if (location.pathname === "/login" || location.pathname === "/register") {
+      navigate(-1);
+    }
+  }, [auth.user]);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -41,6 +59,11 @@ export default function Navbar() {
 
   const handleOpen = () => {
     setOpenAuthModal(true);
+  };
+
+  const handelLogout = () => {
+    dispatch(logout());
+    handleClose();
   };
 
   return (
@@ -185,10 +208,10 @@ export default function Navbar() {
 
                 <div className="space-y-6 border-t border-gray-200 px-4 py-6">
                   <div className="flow-root">
-                    {false ? (
+                    {auth.user ? (
                       <div>
                         <Button
-                          onClick={() => {}}
+                          onClick={handelLogout}
                           className="-m-2 block p-2 font-medium text-gray-900"
                           sx={{
                             fontStyle: "normal",
@@ -400,7 +423,7 @@ export default function Navbar() {
 
               <div className="ml-auto flex items-center">
                 <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
-                  {false ? (
+                  {auth.user ? (
                     <div>
                       <Button
                         id="basic-button"
@@ -418,7 +441,7 @@ export default function Navbar() {
                             border: 1,
                           }}
                         >
-                          A
+                          {auth.user?.firstName[0].toUpperCase()}
                         </Avatar>
                       </Button>
                       <Menu
@@ -434,7 +457,7 @@ export default function Navbar() {
                         <MenuItem onClick={() => navigate("/account/order")}>
                           My Orders
                         </MenuItem>
-                        <MenuItem onClick={() => {}}>Logout</MenuItem>
+                        <MenuItem onClick={handelLogout}>Logout</MenuItem>
                       </Menu>
                     </div>
                   ) : (

@@ -7,7 +7,6 @@ const register = async (req, res) => {
     try {
         // console.log(req.body)
         const user = await userServices.createUser(req.body)
-        console.log(user)
         const jwt = jwtProvider.generateToken(user._id)
         await cartService.createCart(user)
         return res.status(200).send({ jwt, message: "User created successfully" })

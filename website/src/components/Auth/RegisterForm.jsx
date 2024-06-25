@@ -12,15 +12,10 @@ function RegisterForm() {
 
   useEffect(() => {
     if (jwt) {
-      dispatch(getUser());
+      dispatch(getUser(jwt));
+      // console.log(auth.user);
     }
   }, [jwt, auth.jwt]);
-
-  // useEffect(() => {
-  //   if (auth.user) {
-  //     navigate("/");
-  //   }
-  // }, [auth.user]);
 
   const handelSubmit = (event) => {
     event.preventDefault();

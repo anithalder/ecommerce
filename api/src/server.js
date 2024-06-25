@@ -3,11 +3,7 @@ import './db/connect.js'
 import cors from 'cors';
 import express from 'express';
 import * as Routers from './routers/index.routes.js'
-import { Passport } from 'passport';
-import Oauth from 'passport-google-oauth20';
-import session from 'express-session';
 
-const OAuth2Stratergies = Oauth.Strategy
 const port = 8000
 const app = express()
 
