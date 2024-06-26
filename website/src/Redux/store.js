@@ -9,6 +9,6 @@ const rootReducer = combineReducers({
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({ trace: true, traceLimit: 25 }) || compose
 
 
-const store = legacy_createStore(rootReducer, (applyMiddleware(thunk)))
+const store = legacy_createStore(rootReducer, composeEnhancers(applyMiddleware(thunk)))
 
 export default store

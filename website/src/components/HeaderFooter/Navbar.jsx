@@ -56,7 +56,6 @@ export default function Navbar() {
   };
 
   useEffect(() => {
-    console.log(auth.user);
     if (auth.user) {
       handleClose();
     }
@@ -64,6 +63,8 @@ export default function Navbar() {
       navigate(-1);
     }
   }, [auth.user]);
+
+  console.log(typeof auth.user.firstName);
 
   return (
     <div className=" bg-green-400  mb-0 border border-b">
@@ -432,15 +433,13 @@ export default function Navbar() {
                         onClick={handleClick}
                       >
                         <Avatar
-                          className=" text-white"
                           sx={{
                             width: 45,
                             height: 45,
                             bgcolor: "#03424C",
-                            border: 1,
                           }}
                         >
-                          {auth.user.firstName[0].toUpperCase()}
+                          {auth.user[0]}
                         </Avatar>
                       </Button>
                       <Menu
@@ -469,12 +468,10 @@ export default function Navbar() {
                         onClick={handleClick}
                       >
                         <Avatar
-                          className=" text-white"
                           sx={{
                             width: 45,
                             height: 45,
                             bgcolor: "#03424C",
-                            border: 1,
                           }}
                         />
                       </Button>
